@@ -1,0 +1,360 @@
+/* ===================== CONTENEDOR ===================== */
+.admin-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* ===================== HEADER ===================== */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.header-acciones {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+/* ===================== BUSCADOR ===================== */
+.buscador-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icono-busqueda {
+    position: absolute;
+    left: 12px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.buscador-wrapper input {
+    padding: 0.7rem 1rem 0.7rem 40px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    width: 260px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.buscador-wrapper input:focus {
+    border-color: #0ea5e9;
+    background: white;
+    width: 320px;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+}
+
+/* ===================== TABLA ===================== */
+.tabla-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-usuarios th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-usuarios td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.col-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-tabla {
+    width: 35px;
+    height: 35px;
+    background: #e0f2fe;
+    color: #0ea5e9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* ===================== BADGES ===================== */
+.badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-activo { background: #dcfce7; color: #15803d; }
+.badge-inactivo { background: #fee2e2; color: #991b1b; }
+
+/* ===================== BOTONES ===================== */
+.acciones-flex {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.btn-accion {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #64748b;
+}
+
+.btn-view:hover { color: #0ea5e9; border-color: #0ea5e9; background: #f0f9ff; }
+.btn-edit:hover { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
+.btn-delete:hover { color: #ef4444; border-color: #ef4444; background: #fef2f2; }
+
+/* ===================== MODAL ===================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* BOTÓN CERRAR */
+.btn-cerrar-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cerrar-modal:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    transform: rotate(90deg);
+}
+
+/* ===================== FORM ===================== */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-block label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.input-block input,
+.form-select {
+    padding: 0.8rem;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.input-block input:focus,
+.form-select:focus {
+    border-color: #0ea5e9;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+}
+
+/* ===================== VISTA DETALLES (PRO) ===================== */
+.vista-detalles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.avatar-detalle {
+    width: 65px;
+    height: 65px;
+    background: var(--gradiente-primario);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 800;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-main-info h4 {
+    font-size: 1.2rem;
+    color: #0f172a;
+    margin: 0;
+}
+
+.user-main-info p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.detalles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.detalle-item {
+    background: #f8fafc;
+    padding: 0.8rem;
+    border-radius: 12px;
+}
+
+.detalle-item span {
+    display: block;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.detalle-item strong {
+    font-size: 0.9rem;
+    color: #1e293b;
+}
+
+/* ===================== HISTORIAL ===================== */
+.historial-seccion {
+    margin-top: 1rem;
+}
+
+.historial-seccion h5 {
+    font-size: 0.85rem;
+    color: #475569;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lista-accesos {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.acceso-item {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Animación para el Spinner de Carga (UX) */
+.icon-spin {
+    animation: rotarSpinner 1s linear infinite;
+}
+
+@keyframes rotarSpinner {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Pestañas de Navegación */
+.tabs-navegacion {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: -2px; /* Superpone el borde */
+}
+
+.tab-btn:hover { color: #0ea5e9; }
+
+.tab-btn.activa {
+    color: #0ea5e9;
+    border-bottom-color: #0ea5e9;
+}
+/* Estado visual para botones bloqueados */
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+/* ===================== ANIMACIONES ===================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

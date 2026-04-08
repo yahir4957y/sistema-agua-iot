@@ -1,0 +1,153 @@
+/* src/views/Login.css */
+
+/* Fondo moderno con gradiente profundo */
+.login-pantalla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Burbujas decorativas de fondo (estilo agua) */
+.login-pantalla::before,
+.login-pantalla::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+}
+.login-pantalla::before {
+  width: 400px; height: 400px; top: -100px; left: -100px;
+}
+.login-pantalla::after {
+  width: 300px; height: 300px; bottom: -50px; right: -50px;
+}
+
+/* Tarjeta del formulario */
+.tarjeta-login {
+  background: #ffffff;
+  padding: 3rem 2.5rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 10;
+}
+
+.tarjeta-login h2 {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtitulo {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-volver:hover { color: #0ea5e9; }
+
+.grupo-input {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.icono-input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 18px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.grupo-input input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 50px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #f8fafc;
+  outline: none;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.grupo-input input:focus {
+  border-color: #0ea5e9;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+
+.btn-full {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* Transición de Carga */
+.tarjeta-carga {
+  text-align: center;
+  padding: 4rem 3rem;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 10;
+}
+
+/* ==========================================
+   ANIMACIONES DEL LOGIN Y CARGA
+   ========================================== */
+.animar-pop { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.animar-giro { animation: spin 1s linear infinite; }
+.animar-entrada { animation: fadeInUP 0.4s ease-out; }
+
+@keyframes popIn { 
+  0% { transform: scale(0); opacity: 0; } 
+  100% { transform: scale(1); opacity: 1; } 
+}
+
+@keyframes spin { 
+  100% { transform: rotate(360deg); } 
+}
+
+@keyframes fadeInUP { 
+  0% { transform: translateY(20px); opacity: 0; } 
+  100% { transform: translateY(0); opacity: 1; } 
+}
+
+.tarjeta-carga h2 {
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.tarjeta-carga p {
+  color: #64748b;
+}
+
+.icono-exito { font-size: 4.5rem; color: #10b981; margin-bottom: 1.5rem; }
+.icono-spinner { font-size: 2.5rem; color: #0ea5e9; margin-top: 2rem; }
