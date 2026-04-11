@@ -4,7 +4,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 export default function CarruselMinimalista() {
   const [indiceActual, setIndiceActual] = useState(0);
 
-  // Imágenes de prueba desde la web para que carguen de inmediato
+
   const imagenes = [
     './img/imagen.jpg',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZBCHG2uUxWO5Ke0vjiKtfYNX-K0kLcIHUUw&s',
