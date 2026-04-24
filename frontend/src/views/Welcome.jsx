@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import CarruselMinimalista from '../components/CarruselMinimalista';
 
 export default function Welcome() {
-  // 2. INICIAMOS EL NAVEGADOR
+
   const navigate = useNavigate();
 
-  // 3. CREAMOS LAS FUNCIONES DE LOS BOTONES
   const irALogin = () => {
-    navigate('/login'); // Nos lleva a la ruta del login
+    navigate('/login'); 
   };
 
   const mostrarInfo = () => {
@@ -22,7 +21,7 @@ export default function Welcome() {
 
       <nav className="navbar-moderna">
         <div className="logo">Aqua<span className="logo-bold">Optimize</span></div>
-        {/* 4. ASIGNAMOS LA FUNCIÓN AL BOTÓN */}
+        {}
         <button className="btn-login" onClick={irALogin}>Ingresar al Sistema</button>
       </nav>
 
@@ -36,7 +35,7 @@ export default function Welcome() {
           </p>
           
           <div className="hero-botones">
-            {/* 5. ASIGNAMOS LAS FUNCIONES A LOS BOTONES */}
+            {}
             <button className="btn-primario" onClick={irALogin}>Comenzar ahora</button>
             <button className="btn-secundario" onClick={mostrarInfo}>Saber más</button>
           </div>

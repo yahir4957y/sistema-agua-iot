@@ -3,7 +3,7 @@ from models.usuario_model import (
     crear_nuevo_usuario,
     editar_usuario,
     eliminar_usuario_logico,
-    obtener_usuario_por_id  # Asegúrate que exista en tu model
+    obtener_usuario_por_id  
 )
 
 from core.db import obtener_conexion
@@ -13,7 +13,7 @@ from psycopg2.extras import RealDictCursor
 def gestionar_usuarios_request(metodo, datos=None, id_usuario=None):
     print(f"--- Solicitud {metodo} recibida para ID: {id_usuario} ---")
 
-    # ===================== GET =====================
+
     if metodo == 'GET':
         if id_usuario:
             usuario = obtener_usuario_por_id(id_usuario)
@@ -26,7 +26,7 @@ def gestionar_usuarios_request(metodo, datos=None, id_usuario=None):
 
         return {"status": 200, "body": listar_todos_usuarios()}
 
-    # ===================== POST =====================
+
     if metodo == 'POST':
         if not datos or 'email' not in datos:
             return {
@@ -45,7 +45,6 @@ def gestionar_usuarios_request(metodo, datos=None, id_usuario=None):
             "body": {"error": "Error en base de datos al crear"}
         }
 
-    # ===================== PUT =====================
     if metodo == 'PUT':
         try:
             id_int = int(id_usuario)
@@ -68,7 +67,7 @@ def gestionar_usuarios_request(metodo, datos=None, id_usuario=None):
                 "body": {"error": "ID de usuario no válido"}
             }
 
-    # ===================== DELETE =====================
+
     if metodo == 'DELETE':
         try:
             id_int = int(id_usuario)

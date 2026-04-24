@@ -310,6 +310,33 @@
     justify-content: space-between;
 }
 
+/* Magia para los Inputs con Iconos */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper svg {
+    position: absolute;
+    left: 14px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.input-icon-wrapper input:focus + svg,
+.input-icon-wrapper select:focus + svg {
+    color: #0ea5e9; /* El icono se pinta de azul al escribir */
+}
+
+/* Ajustamos el padding izquierdo para que el texto no pise el icono */
+.input-icon-wrapper input, 
+.input-icon-wrapper select {
+    padding-left: 42px !important; 
+    width: 100%;
+}
+
 /* Animación para el Spinner de Carga (UX) */
 .icon-spin {
     animation: rotarSpinner 1s linear infinite;
@@ -358,3 +385,17 @@ button:disabled {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* ===================== UTILIDADES EXTRA (CLEAN CODE) ===================== */
+.text-right { text-align: right; }
+.tabla-vacia { text-align: center; padding: 3rem; color: #94a3b8; }
+.spinner-grande { font-size: 2rem; margin-bottom: 1rem; color: #0ea5e9; }
+.text-activo { color: #10b981; }
+.text-inactivo { color: #ef4444; }
+.mt-1 { margin-top: 1rem; }
+.mb-1-5 { margin-bottom: 1.5rem; }
+
+/* Estilos para el Toast de Eliminar */
+.toast-titulo { margin: 0 0 10px 0; font-size: 0.9rem; color: #1e293b; font-weight: bold; }
+.toast-botones { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-toast-cancelar { padding: 6px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; }
+.btn-toast-eliminar { padding: 6px 12px; border: none; background: #ef4444; color: white; border-radius: 6px; cursor: pointer; }

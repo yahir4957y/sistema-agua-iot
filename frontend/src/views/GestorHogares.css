@@ -1,0 +1,291 @@
+/* ===================== ANIMACIONES Y LAYOUT ===================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hogares-container {
+    animation: fadeIn 0.4s ease-out;
+    padding-bottom: 2rem;
+}
+
+.hogares-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 1rem;
+}
+
+.grid-hogares {
+    display: grid;
+    /* 🔥 Magia aquí: forzamos exactamente 2 columnas del mismo tamaño */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1.5rem;
+}
+
+/* Y si lo abres desde tu celular, se adapta a 1 sola columna */
+@media (max-width: 768px) {
+    .grid-hogares {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================== ESTADOS: CARGANDO Y VACÍO ===================== */
+.estado-cargando {
+    text-align: center;
+    padding: 3rem;
+    color: #94a3b8;
+}
+
+.estado-vacio {
+    text-align: center;
+    padding: 4rem;
+    background: white;
+    border-radius: 20px;
+    border: 2px dashed #cbd5e1;
+}
+
+.icono-vacio { font-size: 4rem; color: #e2e8f0; margin-bottom: 1rem; }
+.titulo-vacio { color: #475569; font-size: 1.5rem; margin-bottom: 10px; }
+.texto-vacio { color: #94a3b8; font-size: 1rem; margin-bottom: 1.5rem; }
+
+.alerta-vacia {
+    font-size: 0.85rem;
+    color: #f59e0b;
+    background: #fef3c7;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* ===================== TARJETAS DE HOGAR ===================== */
+.hogar-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px -5px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hogar-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+}
+
+.hogar-header {
+    background: #f8fafc;
+    padding: 1.2rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.hogar-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+}
+
+.hogar-info p {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.propietario-badge {
+    margin-top: 8px !important;
+    color: #64748b !important;
+    font-size: 0.8rem !important;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+/* ===================== DISPOSITIVOS (ESP32) ===================== */
+.dispositivos-lista {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dispositivo-card {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.dispositivo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.badge-verde { background: #dcfce7; color: #166534; }
+.badge-gris { background: #e2e8f0; color: #475569; }
+
+/* ===================== SENSORES ===================== */
+.sensores-lista {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #cbd5e1;
+}
+
+.sensor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.sensor-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sensor-meta { color: #94a3b8; display: flex; align-items: center;}
+
+/* ===================== BOTONES Y ACCIONES ===================== */
+.acciones-flex { display: flex; gap: 5px; }
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon.edit { color: #64748b; }
+.btn-icon.edit:hover { background: #f1f5f9; }
+.btn-icon.delete { color: #ef4444; }
+.btn-icon.delete:hover { background: #fee2e2; }
+.btn-icon.edit-blue { color: #0ea5e9; }
+.btn-icon.edit-blue:hover { background: #e0f2fe; }
+
+.btn-agregar-disp {
+    width: 100%;
+    padding: 0.8rem;
+    background: #f0f9ff;
+    color: #0ea5e9;
+    border: 1px dashed #bae6fd;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-agregar-disp:hover {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+}
+
+.btn-agregar-sensor {
+    font-size: 0.75rem;
+    background: none;
+    border: 1px dashed #94a3b8;
+    color: #64748b;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.btn-agregar-sensor:hover {
+    background: #f1f5f9;
+    border-color: #64748b;
+    color: #0f172a;
+}
+
+.btn-sensor-save { background: #f59e0b; margin-top: 1rem; }
+.btn-sensor-save:hover { background: #d97706 !important; }
+.btn-disabled { opacity: 0.5; cursor: not-allowed !important; }
+
+/* ===================== FORMULARIOS (MODALES) ===================== */
+.form-select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    background: white;
+    font-family: inherit;
+    color: #0f172a;
+}
+
+.input-error { border: 1px solid #ef4444 !important; }
+
+/* ===================== TOAST PERSONALIZADO ===================== */
+.toast-custom { display: flex; flex-direction: column; }
+.toast-titulo { margin: 0 0 10px 0; font-size: 0.95rem; font-weight: bold; color: #1e293b; }
+.toast-desc { margin: 0 0 15px 0; font-size: 0.85rem; color: #ef4444; }
+.toast-acciones { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-toast-cancel { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; background: white; color: #475569; font-weight: bold; transition: background 0.2s;}
+.btn-toast-cancel:hover { background: #f1f5f9; }
+.btn-toast-delete { padding: 6px 12px; border: none; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;}
+.btn-toast-delete:hover { background: #dc2626; }
+
+/* ===================== CLASES UTILITARIAS (Reemplazo Tailwind) ===================== */
+.m-0 { margin: 0 !important; }
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-4 { margin-top: 1rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-6 { margin-bottom: 1.5rem !important; }
+.mr-1 { margin-right: 0.25rem !important; }
+.mr-2 { margin-right: 0.5rem !important; }
+.ml-1 { margin-left: 0.25rem !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+.my-1 { margin-top: 0.25rem !important; margin-bottom: 0.25rem !important; }
+.p-1 { padding: 0.25rem !important; }
+.py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+.px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+
+.text-sm { font-size: 0.875rem !important; }
+.text-xs { font-size: 0.75rem !important; }
+.text-lg { font-size: 1.125rem !important; }
+.uppercase { text-transform: uppercase !important; }
+
+.text-slate-400 { color: #94a3b8 !important; }
+.text-slate-500 { color: #64748b !important; }
+.text-slate-800 { color: #1e293b !important; }
+.text-slate-900 { color: #0f172a !important; }
+.text-sky-500 { color: #0ea5e9 !important; }
+.text-amber-500 { color: #f59e0b !important; }
+
+.items-center { align-items: center !important; }
