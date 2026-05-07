@@ -1,11 +1,8 @@
-#Config de la base de datos
 DB_CONFIG = {
-    "dbname": "prototipo_opt_agua",    
-    "user": "postgres",               
-    "password": "4957",      
-    "host": "localhost",
-    "port": "5432"
+    "dbname": "postgres",
+    "user": "postgres.hrbfyiwonaaydathrvya",
+    "password": "yahir10913147Y",
+    "host": "aws-1-us-west-2.pooler.supabase.com",
+    "port": "6543"
 }
-
-# Llave maestra para encriptar la seguridad de las rutas (¡No la compartas!)
-SECRET_KEY = "4957y"
+SECRET_KEY = "dHtwEFZaHIC7IQ8RgHBtx9aBW1VBaEEfVrAFMVyuUfKOVcnsCjWf2nPOJeIVYDDSM5cdiggBZEJuqu+EQYB+hQ=="

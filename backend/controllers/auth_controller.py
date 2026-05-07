@@ -2,7 +2,6 @@ import jwt
 import datetime
 from models.usuario_model import verificar_credenciales
 from config import SECRET_KEY  # Llave secreta
-
 from core.db import obtener_conexion  # Mejor importar arriba
 
 
@@ -29,16 +28,26 @@ def procesar_login(datos_peticion):
         
         # Encriptación del token
         token_seguro = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        
-        # Registro de acceso (log)
-        conn = obtener_conexion()
-        cur = conn.cursor()
-        cur.execute(
-            "INSERT INTO log_accesos (id_usuario) VALUES (%s)",
-            (usuario['id_usuario'],)
-        )
-        conn.commit()
-        conn.close()
+        conn = None
+        cur = None
+        try:
+            conn = obtener_conexion()
+            if conn:
+                cur = conn.cursor()
+                cur.execute(
+                    "INSERT INTO log_accesos (id_usuario) VALUES (%s)",
+                    (usuario['id_usuario'],)
+                )
+                conn.commit()
+        except Exception as e:
+            if conn:
+                conn.rollback() 
+            print(f"Error Crítico en BD al guardar log_accesos: {str(e)}")
+        finally:
+            if cur:
+                cur.close()
+            if conn:
+                conn.close()
         
         return {
             "status": 200,
