@@ -23,6 +23,11 @@ from models.sensores_model import (
 
 from services.agregacion_service import generar_cierre_diario
 
+from controllers.configuracion_controller import (
+    gestionar_configuracion_get,
+    gestionar_configuracion_put
+)
+
 
 class EnrutadorPrincipal(BaseHTTPRequestHandler):
 
@@ -142,10 +147,10 @@ class EnrutadorPrincipal(BaseHTTPRequestHandler):
 
             self._enviar_respuesta(resp)
 
-        # 🔥 NUEVA RUTA: traer la lista de hogares para el frontend
+        # traer hogares
         elif self.path == '/api/hogares':
 
-            resp = obtener_lista_hogares()
+            resp = gestionar_hogares_get()
 
             self._enviar_respuesta(resp)
 
@@ -155,6 +160,15 @@ class EnrutadorPrincipal(BaseHTTPRequestHandler):
             id_hogar = self.path.split('/')[-1]
 
             resp = obtener_historial_consumo(id_hogar)
+
+            self._enviar_respuesta(resp)
+
+        # traer configuracion del hogar
+        elif self.path.startswith('/api/configuracion/'):
+
+            id_hogar = self.path.split('/')[-1]
+
+            resp = gestionar_configuracion_get(id_hogar)
 
             self._enviar_respuesta(resp)
 
@@ -319,6 +333,18 @@ class EnrutadorPrincipal(BaseHTTPRequestHandler):
                 'PUT',
                 datos=datos,
                 id_rol=id_rol
+            )
+
+            self._enviar_respuesta(resp)
+
+        # actualizar configuracion del hogar
+        elif self.path.startswith('/api/configuracion/'):
+
+            id_hogar = self.path.split('/')[-1]
+
+            resp = gestionar_configuracion_put(
+                id_hogar,
+                datos
             )
 
             self._enviar_respuesta(resp)

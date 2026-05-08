@@ -13,7 +13,8 @@ import {
   FaTint,
   FaExclamationTriangle,
   FaHome,
-  FaHistory
+  FaHistory,
+  FaCog 
 } from "react-icons/fa";
 import {
   BarChart,
@@ -31,6 +32,7 @@ import AdminUsuarios from "./AdminUsuarios";
 import GestorHogares from "./GestorHogares";
 import { supabase } from "../services/supabaseClient";
 import HistorialConsumo from './HistorialConsumo';
+import ConfiguracionHogar from './ConfiguracionHogar';
 import "./Dashboard.css";
 
 const datosConsumoVacio = [
@@ -43,7 +45,6 @@ const datosConsumoVacio = [
 ];
 
 const COLORES_DONA = ["#10b981", "#f59e0b", "#0ea5e9", "#8b5cf6", "#ec4899"];
-const META_DIARIA = 150;
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -56,6 +57,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           border: "1px solid #e2e8f0",
           boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
         }}
+        role="tooltip"
       >
         <p
           style={{
@@ -89,7 +91,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState("monitoreo");
-  const [filtroTiempo, setFiltroTiempo] = useState("Diario");
+  
+  // 🔥 Lógica de caché: Inicializamos la meta leyendo el sessionStorage para evitar parpadeos
+  const metaCache = sessionStorage.getItem('meta_diaria_cache');
+  const [metaDiaria, setMetaDiaria] = useState(metaCache ? Number(metaCache) : 150);
 
   const [stats, setStats] = useState({
     total_hoy: 0,
@@ -108,11 +113,25 @@ export default function Dashboard() {
     navigate("/", { replace: true });
   };
 
-
   const parseDateUTC = (dateStr) => {
     return new Date(
       dateStr + (dateStr.includes("Z") || dateStr.includes("+") ? "" : "Z"),
     );
+  };
+
+  // 🔥 Sincronización en Background: Trae la meta real del servidor y actualiza estado + caché
+  const cargarConfiguracion = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/configuracion/1");
+      const data = await res.json();
+      if (res.ok && data.configuracion && data.configuracion.meta_diaria) {
+        const nuevaMeta = data.configuracion.meta_diaria;
+        setMetaDiaria(nuevaMeta);
+        sessionStorage.setItem('meta_diaria_cache', nuevaMeta);
+      }
+    } catch (error) {
+      console.warn("⚠️ No se pudo sincronizar la meta de configuración", error);
+    }
   };
 
   const fetchStats = async () => {
@@ -141,14 +160,13 @@ export default function Dashboard() {
       const mapaSensores = {};
       resSensores.data.forEach((s) => (mapaSensores[s.id_sensor] = s.nombre));
 
-      // 🔥 Lógica de estado ONLINE/OFFLINE corregida
+      // Lógica de estado ONLINE/OFFLINE
       if (resLecturas.data.length > 0) {
         const ultimaLectura = parseDateUTC(resLecturas.data[0].fecha_hora);
         const ahora = new Date();
         const diferenciaMinutos =
           (ahora.getTime() - ultimaLectura.getTime()) / (1000 * 60);
 
-        // Solo está online si la diferencia es positiva y menor o igual a 5 minutos
         setEstadoESP32(
           diferenciaMinutos >= 0 && diferenciaMinutos <= 5
             ? "online"
@@ -170,7 +188,6 @@ export default function Dashboard() {
           totalPrincipal += litrosReales;
           const date = parseDateUTC(row.fecha_hora);
           const hour = date.getHours();
-          // Formato estricto de 24 horas (ej. 03:00, 15:00)
           const horaString = hour.toString().padStart(2, "0") + ":00";
           barrasMap[horaString] = (barrasMap[horaString] || 0) + litrosReales;
         }
@@ -218,10 +235,26 @@ export default function Dashboard() {
         grafico_dona: donaFormateada,
       });
     } catch (error) {
-      console.warn(" Error de red:", error);
+      console.warn("Error de red:", error);
     }
   };
 
+  // Se ejecuta una sola vez al cargar la página para sincronizar configuración
+  useEffect(() => {
+    cargarConfiguracion();
+  }, []);
+
+  // 🔥 NUEVO CÓDIGO AÑADIDO AQUÍ 🔥
+  // Este useEffect obliga a React a leer la meta cada vez que entras al Monitoreo
+  useEffect(() => {
+    if (seccionActiva === "monitoreo") {
+      const metaCache = sessionStorage.getItem('meta_diaria_cache');
+      if (metaCache) setMetaDiaria(Number(metaCache));
+    }
+  }, [seccionActiva]);
+  // 🔥 FIN DEL NUEVO CÓDIGO 🔥
+
+  // Se encarga de las lecturas en tiempo real
   useEffect(() => {
     if (seccionActiva === "monitoreo") {
       fetchStats();
@@ -232,12 +265,16 @@ export default function Dashboard() {
 
   const dataBarras =
     stats.grafico_barras.length > 0 ? stats.grafico_barras : datosConsumoVacio;
+  
   const totalDona = stats.grafico_dona.reduce(
     (acc, curr) => acc + curr.valor,
     0,
   );
+  
+  // 🔥 Cálculo de porcentaje usando la meta dinámica con protección contra NaN
+  const metaValida = metaDiaria > 0 ? metaDiaria : 150;
   const porcentajeMeta = Math.min(
-    Math.round((stats.total_hoy / META_DIARIA) * 100),
+    Math.round((stats.total_hoy / metaValida) * 100),
     100,
   );
 
@@ -247,37 +284,51 @@ export default function Dashboard() {
         <div className="sidebar-logo">
           Aqua<span>Optimize</span>
         </div>
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav" aria-label="Navegación Principal">
           <button
             className={`nav-item ${seccionActiva === "monitoreo" ? "activo" : ""}`}
             onClick={() => setSeccionActiva("monitoreo")}
+            aria-current={seccionActiva === "monitoreo" ? "page" : undefined}
           >
-            <FaChartLine /> Monitoreo en Vivo
+            <FaChartLine aria-hidden="true" /> Monitoreo en Vivo
           </button>
           <button
             className={`nav-item ${seccionActiva === "hogares" ? "activo" : ""}`}
             onClick={() => setSeccionActiva("hogares")}
+            aria-current={seccionActiva === "hogares" ? "page" : undefined}
           >
-            <FaHome /> Gestión de Infraestructura
+            <FaHome aria-hidden="true" /> Gestión de Infraestructura
           </button>
           <button
             className={`nav-item ${seccionActiva === "usuarios" ? "activo" : ""}`}
             onClick={() => setSeccionActiva("usuarios")}
+            aria-current={seccionActiva === "usuarios" ? "page" : undefined}
           >
-            <FaUsers /> Gestión de Usuarios
+            <FaUsers aria-hidden="true" /> Gestión de Usuarios
           </button>
-          <button className={`nav-item ${seccionActiva === 'historial' ? 'activo' : ''}`} onClick={() => setSeccionActiva('historial')}>
-  <FaHistory /> Historial de Consumo
-</button>
-          <button className="nav-item">
-            <FaBell /> Historial de Alertas
+          <button 
+            className={`nav-item ${seccionActiva === 'historial' ? 'activo' : ''}`} 
+            onClick={() => setSeccionActiva('historial')}
+            aria-current={seccionActiva === "historial" ? "page" : undefined}
+          >
+            <FaHistory aria-hidden="true" /> Historial de Consumo
+          </button>
+          <button 
+            className={`nav-item ${seccionActiva === 'configHogar' ? 'activo' : ''}`} 
+            onClick={() => setSeccionActiva('configHogar')}
+            aria-current={seccionActiva === "configHogar" ? "page" : undefined}
+          >
+            <FaCog aria-hidden="true" /> Configuración de Hogar
           </button>
           <button className="nav-item">
-            <FaBrain /> Predicciones ML
+            <FaBell aria-hidden="true" /> Historial de Alertas
+          </button>
+          <button className="nav-item">
+            <FaBrain aria-hidden="true" /> Predicciones ML
           </button>
         </nav>
-        <button onClick={cerrarSesion} className="btn-cerrar-sesion">
-          <FaSignOutAlt /> Cerrar Sesión
+        <button onClick={cerrarSesion} className="btn-cerrar-sesion" aria-label="Cerrar sesión segura">
+          <FaSignOutAlt aria-hidden="true" /> Cerrar Sesión
         </button>
       </aside>
 
@@ -295,8 +346,7 @@ export default function Dashboard() {
                 <div
                   className="badge-sensores"
                   style={{
-                    background:
-                      estadoESP32 === "online" ? "#dcfce7" : "#fee2e2",
+                    background: estadoESP32 === "online" ? "#dcfce7" : "#fee2e2",
                     color: estadoESP32 === "online" ? "#166534" : "#991b1b",
                   }}
                 >
@@ -305,8 +355,7 @@ export default function Dashboard() {
                       width: "8px",
                       height: "8px",
                       borderRadius: "50%",
-                      background:
-                        estadoESP32 === "online" ? "#22c55e" : "#ef4444",
+                      background: estadoESP32 === "online" ? "#22c55e" : "#ef4444",
                       display: "inline-block",
                       marginRight: "6px",
                     }}
@@ -315,7 +364,7 @@ export default function Dashboard() {
                     ? "Hardware Transmitiendo"
                     : "Hardware Apagado"}
                 </div>
-                <div className="avatar-header">
+                <div className="avatar-header" aria-label={`Usuario: ${usuario.nombre}`}>
                   {usuario.nombre.charAt(0).toUpperCase()}
                 </div>
               </div>
@@ -337,16 +386,21 @@ export default function Dashboard() {
                     borderRadius: "3px",
                     overflow: "hidden",
                   }}
+                  role="progressbar"
+                  aria-valuenow={porcentajeMeta}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                   <div
                     style={{
                       width: `${porcentajeMeta}%`,
-                      background: porcentajeMeta > 90 ? "#ef4444" : "#0ea5e9",
+                      background: porcentajeMeta >= 100 ? "#ef4444" : "#0ea5e9",
                       height: "100%",
-                      transition: "width 0.5s",
+                      transition: "width 0.5s ease-in-out, background 0.3s",
                     }}
                   />
                 </div>
+                {/* 🔥 Etiquetas dinámicas con la meta obtenida */}
                 <p
                   style={{
                     fontSize: "0.75rem",
@@ -357,7 +411,7 @@ export default function Dashboard() {
                   }}
                 >
                   <span>{porcentajeMeta}% de la meta</span>
-                  <span>Meta: {META_DIARIA}L</span>
+                  <span>Meta: {metaValida}L</span>
                 </p>
               </div>
 
@@ -390,8 +444,7 @@ export default function Dashboard() {
                 >
                   {estadoESP32 === "online" ? (
                     <>
-                      <FaCheckCircle style={{ marginRight: "4px" }} /> Sin
-                      anomalías detectadas
+                      <FaCheckCircle style={{ marginRight: "4px" }} /> Sin anomalías detectadas
                     </>
                   ) : (
                     "Esperando lectura..."
@@ -460,6 +513,7 @@ export default function Dashboard() {
                         }
                         radius={[4, 4, 0, 0]}
                         maxBarSize={50}
+                        aria-label="Gráfico de barras de consumo por hora"
                       />
                     </BarChart>
                   </ResponsiveContainer>
@@ -469,7 +523,6 @@ export default function Dashboard() {
               <div className="chart-card">
                 <div className="chart-header">
                   <div>
-                    { }
                     <h3
                       style={{
                         fontSize: "1.1rem",
@@ -477,7 +530,7 @@ export default function Dashboard() {
                         margin: "0 0 0.2rem 0",
                       }}
                     >
-                      Distribuciones por area
+                      Distribución por área
                     </h3>
                     <p
                       style={{
@@ -576,6 +629,7 @@ export default function Dashboard() {
                             {entry.nombre === "Otros / Fugas" && (
                               <FaExclamationTriangle
                                 style={{ color: "#f59e0b" }}
+                                aria-label="Alerta de posibles fugas"
                               />
                             )}
                           </div>
@@ -608,6 +662,7 @@ export default function Dashboard() {
         {seccionActiva === "usuarios" && <AdminUsuarios />}
         {seccionActiva === "hogares" && <GestorHogares />}
         {seccionActiva === "historial" && <HistorialConsumo />}
+        {seccionActiva === "configHogar" && <ConfiguracionHogar />} 
       </main>
     </div>
   );
